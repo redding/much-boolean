@@ -1,6 +1,6 @@
 # MuchBoolean
 
-TODO: Write a gem description
+An API for friendly boolean parsing and handling
 
 ## Usage
 

@@ -1,3 +1,3 @@
-module MuchBoolean
+class MuchBoolean
   VERSION = "0.0.1"
 end

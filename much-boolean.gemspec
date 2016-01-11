@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version     = MuchBoolean::VERSION
   gem.authors     = ["Kelly Redding", "Collin Redding"]
   gem.email       = ["kelly@kellyredding.com", "collin.redding@me.com "]
-  gem.summary     = "An API for friendly boolean parsing and handling"
-  gem.description = "An API for friendly boolean parsing and handling"
+  gem.summary     = "An API for friendly boolean conversion, interpretation and handling"
+  gem.description = "An API for friendly boolean conversion, interpretation and handling"
   gem.homepage    = "https://github.com/redding/much-boolean"
   gem.license     = 'MIT'
 

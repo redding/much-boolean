@@ -7,7 +7,10 @@ class MuchBoolean
     desc "MuchBoolean"
     subject{ MuchBoolean }
 
-    should have_imeth :convert
+    should have_imeths :convert
+    should have_imeths :one_zero
+    should have_imeths :true_false, :True_False, :TRUE_FALSE, :t_f, :T_F
+    should have_imeths :yes_no,  :Yes_No, :YES_NO, :y_n, :Y_N
 
     should "know its false values" do
       exp = [
@@ -63,6 +66,62 @@ class MuchBoolean
       [Factory.string, Factory.integer, Factory.date, Factory.time].each do |val|
         assert_true MuchBoolean.convert(val)
       end
+    end
+
+    should "encode booleans as ones and zeros" do
+      assert_equal 1, MuchBoolean.one_zero(true)
+      assert_equal 0, MuchBoolean.one_zero(false)
+
+      assert_true  MuchBoolean.convert(MuchBoolean.one_zero(true))
+      assert_false MuchBoolean.convert(MuchBoolean.one_zero(false))
+    end
+
+    should "encode booleans as true/false strings" do
+      assert_equal 'true',  MuchBoolean.true_false(true)
+      assert_equal 'false', MuchBoolean.true_false(false)
+      assert_equal 'True',  MuchBoolean.True_False(true)
+      assert_equal 'False', MuchBoolean.True_False(false)
+      assert_equal 'TRUE',  MuchBoolean.TRUE_FALSE(true)
+      assert_equal 'FALSE', MuchBoolean.TRUE_FALSE(false)
+      assert_equal 't',     MuchBoolean.t_f(true)
+      assert_equal 'f',     MuchBoolean.t_f(false)
+      assert_equal 'T',     MuchBoolean.T_F(true)
+      assert_equal 'F',     MuchBoolean.T_F(false)
+
+      assert_true  MuchBoolean.convert(MuchBoolean.true_false(true))
+      assert_false MuchBoolean.convert(MuchBoolean.true_false(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.True_False(true))
+      assert_false MuchBoolean.convert(MuchBoolean.True_False(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.TRUE_FALSE(true))
+      assert_false MuchBoolean.convert(MuchBoolean.TRUE_FALSE(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.t_f(true))
+      assert_false MuchBoolean.convert(MuchBoolean.t_f(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.T_F(true))
+      assert_false MuchBoolean.convert(MuchBoolean.T_F(false))
+    end
+
+    should "encode booleans as yes/no strings" do
+      assert_equal 'yes', MuchBoolean.yes_no(true)
+      assert_equal 'no',  MuchBoolean.yes_no(false)
+      assert_equal 'Yes', MuchBoolean.Yes_No(true)
+      assert_equal 'No',  MuchBoolean.Yes_No(false)
+      assert_equal 'YES', MuchBoolean.YES_NO(true)
+      assert_equal 'NO',  MuchBoolean.YES_NO(false)
+      assert_equal 'y',   MuchBoolean.y_n(true)
+      assert_equal 'n',   MuchBoolean.y_n(false)
+      assert_equal 'Y',   MuchBoolean.Y_N(true)
+      assert_equal 'N',   MuchBoolean.Y_N(false)
+
+      assert_true  MuchBoolean.convert(MuchBoolean.yes_no(true))
+      assert_false MuchBoolean.convert(MuchBoolean.yes_no(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.Yes_No(true))
+      assert_false MuchBoolean.convert(MuchBoolean.Yes_No(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.YES_NO(true))
+      assert_false MuchBoolean.convert(MuchBoolean.YES_NO(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.y_n(true))
+      assert_false MuchBoolean.convert(MuchBoolean.y_n(false))
+      assert_true  MuchBoolean.convert(MuchBoolean.Y_N(true))
+      assert_false MuchBoolean.convert(MuchBoolean.Y_N(false))
     end
 
   end

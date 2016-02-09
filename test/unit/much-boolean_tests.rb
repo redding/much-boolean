@@ -14,7 +14,6 @@ class MuchBoolean
 
     should "know its false values" do
       exp = [
-        nil,
         0, '0',
         false, 'false', 'False', 'FALSE', 'f', 'F',
         'no', 'No', 'NO', 'n', 'N'
@@ -22,8 +21,8 @@ class MuchBoolean
       assert_equal exp, subject::FALSE_VALUES
     end
 
-    should "convert nil values as `false`" do
-      assert_false MuchBoolean.convert(nil)
+    should "ignore nil values when converting" do
+      assert_nil MuchBoolean.convert(nil)
     end
 
     should "convert 'zero-ish' values as `false`" do
@@ -69,8 +68,10 @@ class MuchBoolean
     end
 
     should "encode booleans as ones and zeros" do
-      assert_equal 1, MuchBoolean.one_zero(true)
-      assert_equal 0, MuchBoolean.one_zero(false)
+      assert_equal 1,   MuchBoolean.one_zero(true)
+      assert_equal 0,   MuchBoolean.one_zero(false)
+      assert_equal nil, MuchBoolean.one_zero(nil)
+      assert_equal 1,   MuchBoolean.one_zero(Factory.string)
 
       assert_true  MuchBoolean.convert(MuchBoolean.one_zero(true))
       assert_false MuchBoolean.convert(MuchBoolean.one_zero(false))
@@ -79,14 +80,24 @@ class MuchBoolean
     should "encode booleans as true/false strings" do
       assert_equal 'true',  MuchBoolean.true_false(true)
       assert_equal 'false', MuchBoolean.true_false(false)
+      assert_equal nil,     MuchBoolean.true_false(nil)
+      assert_equal 'true',  MuchBoolean.true_false(Factory.string)
       assert_equal 'True',  MuchBoolean.True_False(true)
       assert_equal 'False', MuchBoolean.True_False(false)
+      assert_equal nil,     MuchBoolean.True_False(nil)
+      assert_equal 'True',  MuchBoolean.True_False(Factory.string)
       assert_equal 'TRUE',  MuchBoolean.TRUE_FALSE(true)
       assert_equal 'FALSE', MuchBoolean.TRUE_FALSE(false)
+      assert_equal nil,     MuchBoolean.TRUE_FALSE(nil)
+      assert_equal 'TRUE',  MuchBoolean.TRUE_FALSE(Factory.string)
       assert_equal 't',     MuchBoolean.t_f(true)
       assert_equal 'f',     MuchBoolean.t_f(false)
+      assert_equal nil,     MuchBoolean.t_f(nil)
+      assert_equal 't',     MuchBoolean.t_f(Factory.string)
       assert_equal 'T',     MuchBoolean.T_F(true)
       assert_equal 'F',     MuchBoolean.T_F(false)
+      assert_equal nil,     MuchBoolean.T_F(nil)
+      assert_equal 'T',     MuchBoolean.T_F(Factory.string)
 
       assert_true  MuchBoolean.convert(MuchBoolean.true_false(true))
       assert_false MuchBoolean.convert(MuchBoolean.true_false(false))
@@ -103,14 +114,24 @@ class MuchBoolean
     should "encode booleans as yes/no strings" do
       assert_equal 'yes', MuchBoolean.yes_no(true)
       assert_equal 'no',  MuchBoolean.yes_no(false)
+      assert_equal nil,   MuchBoolean.yes_no(nil)
+      assert_equal 'yes', MuchBoolean.yes_no(Factory.string)
       assert_equal 'Yes', MuchBoolean.Yes_No(true)
       assert_equal 'No',  MuchBoolean.Yes_No(false)
+      assert_equal nil,   MuchBoolean.Yes_No(nil)
+      assert_equal 'Yes', MuchBoolean.Yes_No(Factory.string)
       assert_equal 'YES', MuchBoolean.YES_NO(true)
       assert_equal 'NO',  MuchBoolean.YES_NO(false)
+      assert_equal nil,   MuchBoolean.YES_NO(nil)
+      assert_equal 'YES', MuchBoolean.YES_NO(Factory.string)
       assert_equal 'y',   MuchBoolean.y_n(true)
       assert_equal 'n',   MuchBoolean.y_n(false)
+      assert_equal nil,   MuchBoolean.y_n(nil)
+      assert_equal 'y',   MuchBoolean.y_n(Factory.string)
       assert_equal 'Y',   MuchBoolean.Y_N(true)
       assert_equal 'N',   MuchBoolean.Y_N(false)
+      assert_equal nil,   MuchBoolean.Y_N(nil)
+      assert_equal 'Y',   MuchBoolean.Y_N(Factory.string)
 
       assert_true  MuchBoolean.convert(MuchBoolean.yes_no(true))
       assert_false MuchBoolean.convert(MuchBoolean.yes_no(false))
@@ -146,10 +167,10 @@ class MuchBoolean
       assert_true  bool.actual
     end
 
-    should "default its actual value to `false` when given nothing" do
+    should "default its actual value to nil when given nil" do
       bool = MuchBoolean.new
-      assert_nil   bool.given
-      assert_false bool.actual
+      assert_nil bool.given
+      assert_nil bool.actual
     end
 
     should "know if it is equal to another much boolean or not" do

@@ -6,15 +6,17 @@ An API for friendly boolean conversion, interpretation and handling
 
 ```ruby
 require 'much-boolean'
-MuchBoolean::FALSE_VALUES # => [ nil, 0, "0",
+MuchBoolean::FALSE_VALUES # => [ 0, "0",
                           #      false, "false", "False", "FALSE", "f", "F",
                           #      "no", "No", "NO", "n", "N"
                           #    ]
 
 # convert human-friendly representative values to actual booleans
 
-# nil, zero/one type values
-MuchBoolean.convert(nil) # => false
+# nil values - theses are ignored
+MuchBoolean.convert(nil) # => nil
+
+# zero/one type values
 MuchBoolean.convert(0)   # => false
 MuchBoolean.convert('0') # => false
 MuchBoolean.convert(1)   # => true
@@ -90,7 +92,7 @@ MuchBoolean.Y_N(false)    # => 'N'
 
 bool = MuchBoolean.new
 bool.given  # => nil
-bool.actual # => false
+bool.actual # => nil
 
 MuchBoolean::FALSE_VALUES.each do |val|
   bool = MuchBoolean.new(val)

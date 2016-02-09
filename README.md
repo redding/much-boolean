@@ -11,6 +11,8 @@ MuchBoolean::FALSE_VALUES # => [ nil, 0, "0",
                           #      "no", "No", "NO", "n", "N"
                           #    ]
 
+# convert human-friendly representative values to actual booleans
+
 # nil, zero/one type values
 MuchBoolean.convert(nil) # => false
 MuchBoolean.convert(0)   # => false
@@ -53,7 +55,38 @@ MuchBoolean.convert(Time.now)      # => true
 
 
 
-# create instances to track given values and the actually boolean values they map to
+# convert actual booleans back to human-friendly representative values
+
+MuchBoolean.one_zero(true)       # => 1
+MuchBoolean.one_zero(false)      # => 0
+MuchBoolean.one_zero(true).to_s  # => '1'
+MuchBoolean.one_zero(false).to_s # => '0'
+
+MuchBoolean.true_false(true)  # => 'true'
+MuchBoolean.true_false(false) # => 'false'
+MuchBoolean.True_False(true)  # => 'True'
+MuchBoolean.True_False(false) # => 'False'
+MuchBoolean.TRUE_FALSE(true)  # => 'TRUE'
+MuchBoolean.TRUE_FALSE(false) # => 'FALSE'
+MuchBoolean.t_f(true)         # => 't'
+MuchBoolean.t_f(false)        # => 'f'
+MuchBoolean.T_F(true)         # => 'T'
+MuchBoolean.T_F(false)        # => 'F'
+
+MuchBoolean.yes_no(true)  # => 'yes'
+MuchBoolean.yes_no(false) # => 'no'
+MuchBoolean.Yes_No(true)  # => 'Yes'
+MuchBoolean.Yes_No(false) # => 'No'
+MuchBoolean.YES_NO(true)  # => 'YES'
+MuchBoolean.YES_NO(false) # => 'NO'
+MuchBoolean.y_n(true)     # => 'y'
+MuchBoolean.y_n(false)    # => 'n'
+MuchBoolean.Y_N(true)     # => 'Y'
+MuchBoolean.Y_N(false)    # => 'N'
+
+
+
+# create instances to track given human-friendly values and the boolean values they map to
 
 bool = MuchBoolean.new
 bool.given  # => nil

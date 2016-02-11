@@ -13,8 +13,9 @@ MuchBoolean::FALSE_VALUES # => [ 0, "0",
 
 # convert human-friendly representative values to actual booleans
 
-# nil values - theses are ignored
+# nil and empty-string values - theses are ignored
 MuchBoolean.convert(nil) # => nil
+MuchBoolean.convert('')  # => nil
 
 # zero/one type values
 MuchBoolean.convert(0)   # => false

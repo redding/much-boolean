@@ -11,9 +11,11 @@ MuchBoolean::FALSE_VALUES # => [ 0, "0",
                           #      "no", "No", "NO", "n", "N"
                           #    ]
 
+
+
 # convert human-friendly representative values to actual booleans
 
-# nil and empty-string values - theses are ignored
+# nil and empty-string values are ignored
 MuchBoolean.convert(nil) # => nil
 MuchBoolean.convert('')  # => nil
 
@@ -51,8 +53,8 @@ MuchBoolean.convert("Y")   # => true
 
 # all other values always interpreted as `true`
 MuchBoolean.convert('some-string') # => true
-MuchBoolean.convert('1938')        # => true
-MuchBoolean.convert('1938.5')      # => true
+MuchBoolean.convert(1938)          # => true
+MuchBoolean.convert(1938.5)        # => true
 MuchBoolean.convert(Date.today)    # => true
 MuchBoolean.convert(Time.now)      # => true
 
@@ -103,7 +105,7 @@ MuchBoolean::FALSE_VALUES.each do |val|
   bool == true  # => false
 end
 
-['some-string', '1938', '1938.5', Date.today, Time.now].each do |val|
+['some-string', 1938, 1938.5, Date.today, Time.now].each do |val|
   bool = MuchBoolean.new(val)
   bool.given    # => {val}
   bool.actual   # => true

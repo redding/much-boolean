@@ -5,6 +5,8 @@ require "much-boolean/version"
 class MuchBoolean
   FALSE_VALUES =
     [
+      nil,
+      "",
       0,
       "0",
       false,
@@ -21,7 +23,6 @@ class MuchBoolean
     ].freeze
 
   def self.convert(value)
-    return nil if value.to_s.empty? # covers `nil` and `""`
     !FALSE_VALUES.include?(value)
   end
 
@@ -86,8 +87,7 @@ class MuchBoolean
 
   module Mapping
     def self.new(boolean_value, true_value, false_value)
-      return nil         if boolean_value.to_s.empty? # covers `nil` and `""`
-      return false_value if boolean_value == false
+      return false_value if MuchBoolean.convert(boolean_value) == false
       true_value
     end
   end

@@ -9,68 +9,124 @@ class MuchBoolean
 
     should have_imeths :convert
     should have_imeths :one_zero
-    should have_imeths :true_false, :True_False, :TRUE_FALSE, :t_f, :T_F
-    should have_imeths :yes_no,  :Yes_No, :YES_NO, :y_n, :Y_N
+    should have_imeths :t_f, :T_F, :true_false, :True_False, :TRUE_FALSE
+    should have_imeths :on_off, :On_Off, :ON_OFF
+    should have_imeths :y_n, :Y_N, :yes_no, :Yes_No, :YES_NO
 
     should "know its false values" do
-      exp = [
-        nil,
-        "",
-        0,
-        "0",
-        false,
-        "false",
-        "False",
-        "FALSE",
-        "f",
-        "F",
-        "no",
-        "No",
-        "NO",
-        "n",
-        "N"
-      ]
+      exp =
+        [
+          nil,
+          "",
+          :"",
+          0,
+          "0",
+          :"0",
+          false,
+          "f",
+          :f,
+          "F",
+          :F,
+          "false",
+          :false,
+          "False",
+          :False,
+          "FALSE",
+          :FALSE,
+          "off",
+          :off,
+          "Off",
+          :Off,
+          "OFF",
+          :OFF,
+          "n",
+          :n,
+          "N",
+          :N,
+          "no",
+          :no,
+          "No",
+          :No,
+          "NO",
+          :NO,
+        ]
       assert_equal exp, subject::FALSE_VALUES
     end
 
     should "convert nil and empty-string values as `false`" do
-      [nil, ""].each do |val|
+      [nil, "", :""].each do |val|
         assert_that(MuchBoolean.convert(val)).is_false
       end
     end
 
     should "convert zero-ish values as `false`" do
-      [0, "0"].each do |val|
+      [0, "0", :"0"].each do |val|
         assert_that(MuchBoolean.convert(val)).is_false
       end
     end
 
     should "convert false-ish values as `false`" do
-      [false, "false", "False", "FALSE", "f", "F"].each do |val|
+      [
+        false,
+        "f",
+        :f,
+        "F",
+        :F,
+        "false",
+        :false,
+        "False",
+        :False,
+        "FALSE",
+        :FALSE,
+      ].each do |val|
+        assert_that(MuchBoolean.convert(val)).is_false
+      end
+    end
+
+    should "convert off-ish values as `false`" do
+      ["off", :off, "Off", :Off, "OFF", :OFF].each do |val|
         assert_that(MuchBoolean.convert(val)).is_false
       end
     end
 
     should "convert no-ish values as `false`" do
-      ["no", "No", "NO", "n", "N"].each do |val|
+      ["n", :n, "N", :N, "no", :no, "No", :No, "NO", :NO].each do |val|
         assert_that(MuchBoolean.convert(val)).is_false
       end
     end
 
     should "convert one-ish values as `true`" do
-      [1, "1"].each do |val|
+      [1, "1", :"1"].each do |val|
         assert_that(MuchBoolean.convert(val)).is_true
       end
     end
 
     should "convert true-ish values as `true`" do
-      [true, "true", "True", "TRUE", "t", "T"].each do |val|
+      [
+        true,
+        "t",
+        :t,
+        "T",
+        :T,
+        "true",
+        :true,
+        "True",
+        :True,
+        "TRUE",
+        :TRUE,
+      ].each do |val|
+        assert_that(MuchBoolean.convert(val)).is_true
+      end
+    end
+
+    should "convert on-ish values as `false`" do
+      ["on", :on, "On", :On, "ON", :ON].each do |val|
         assert_that(MuchBoolean.convert(val)).is_true
       end
     end
 
     should "convert yes-ish values as `true`" do
-      ["yes", "Yes", "YES", "y", "Y"].each do |val|
+      ["y", :y, "Y", :Y, "yes", :yes, "Yes", :Yes, "YES", :YES].each do |val|
         assert_that(MuchBoolean.convert(val)).is_true
       end
     end
@@ -93,6 +149,16 @@ class MuchBoolean
     end
 
     should "encode booleans as true/false strings" do
+      assert_that(MuchBoolean.t_f(true)).equals("t")
+      assert_that(MuchBoolean.t_f(false)).equals("f")
+      assert_that(MuchBoolean.t_f(nil)).equals("f")
+      assert_that(MuchBoolean.t_f("")).equals("f")
+      assert_that(MuchBoolean.t_f(Factory.string)).equals("t")
+      assert_that(MuchBoolean.T_F(true)).equals("T")
+      assert_that(MuchBoolean.T_F(false)).equals("F")
+      assert_that(MuchBoolean.T_F(nil)).equals("F")
+      assert_that(MuchBoolean.T_F("")).equals("F")
+      assert_that(MuchBoolean.T_F(Factory.string)).equals("T")
       assert_that(MuchBoolean.true_false(true)).equals("true")
       assert_that(MuchBoolean.true_false(false)).equals("false")
       assert_that(MuchBoolean.true_false(nil)).equals("false")
@@ -108,30 +174,55 @@ class MuchBoolean
       assert_that(MuchBoolean.TRUE_FALSE(nil)).equals("FALSE")
       assert_that(MuchBoolean.TRUE_FALSE("")).equals("FALSE")
       assert_that(MuchBoolean.TRUE_FALSE(Factory.string)).equals("TRUE")
-      assert_that(MuchBoolean.t_f(true)).equals("t")
-      assert_that(MuchBoolean.t_f(false)).equals("f")
-      assert_that(MuchBoolean.t_f(nil)).equals("f")
-      assert_that(MuchBoolean.t_f("")).equals("f")
-      assert_that(MuchBoolean.t_f(Factory.string)).equals("t")
-      assert_that(MuchBoolean.T_F(true)).equals("T")
-      assert_that(MuchBoolean.T_F(false)).equals("F")
-      assert_that(MuchBoolean.T_F(nil)).equals("F")
-      assert_that(MuchBoolean.T_F("")).equals("F")
-      assert_that(MuchBoolean.T_F(Factory.string)).equals("T")
 
+      assert_that(MuchBoolean.convert(MuchBoolean.t_f(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.t_f(false))).is_false
+      assert_that(MuchBoolean.convert(MuchBoolean.T_F(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.T_F(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.true_false(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.true_false(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.True_False(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.True_False(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.TRUE_FALSE(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.TRUE_FALSE(false))).is_false
-      assert_that(MuchBoolean.convert(MuchBoolean.t_f(true))).is_true
-      assert_that(MuchBoolean.convert(MuchBoolean.t_f(false))).is_false
-      assert_that(MuchBoolean.convert(MuchBoolean.T_F(true))).is_true
-      assert_that(MuchBoolean.convert(MuchBoolean.T_F(false))).is_false
+    end
+
+    should "encode booleans as on/off strings" do
+      assert_that(MuchBoolean.on_off(true)).equals("on")
+      assert_that(MuchBoolean.on_off(false)).equals("off")
+      assert_that(MuchBoolean.on_off(nil)).equals("off")
+      assert_that(MuchBoolean.on_off("")).equals("off")
+      assert_that(MuchBoolean.on_off(Factory.string)).equals("on")
+      assert_that(MuchBoolean.On_Off(true)).equals("On")
+      assert_that(MuchBoolean.On_Off(false)).equals("Off")
+      assert_that(MuchBoolean.On_Off(nil)).equals("Off")
+      assert_that(MuchBoolean.On_Off("")).equals("Off")
+      assert_that(MuchBoolean.On_Off(Factory.string)).equals("On")
+      assert_that(MuchBoolean.ON_OFF(true)).equals("ON")
+      assert_that(MuchBoolean.ON_OFF(false)).equals("OFF")
+      assert_that(MuchBoolean.ON_OFF(nil)).equals("OFF")
+      assert_that(MuchBoolean.ON_OFF("")).equals("OFF")
+      assert_that(MuchBoolean.ON_OFF(Factory.string)).equals("ON")
+
+      assert_that(MuchBoolean.convert(MuchBoolean.on_off(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.on_off(false))).is_false
+      assert_that(MuchBoolean.convert(MuchBoolean.On_Off(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.On_Off(false))).is_false
+      assert_that(MuchBoolean.convert(MuchBoolean.ON_OFF(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.ON_OFF(false))).is_false
     end
 
     should "encode booleans as yes/no strings" do
+      assert_that(MuchBoolean.y_n(true)).equals("y")
+      assert_that(MuchBoolean.y_n(false)).equals("n")
+      assert_that(MuchBoolean.y_n(nil)).equals("n")
+      assert_that(MuchBoolean.y_n("")).equals("n")
+      assert_that(MuchBoolean.y_n(Factory.string)).equals("y")
+      assert_that(MuchBoolean.Y_N(true)).equals("Y")
+      assert_that(MuchBoolean.Y_N(false)).equals("N")
+      assert_that(MuchBoolean.Y_N(nil)).equals("N")
+      assert_that(MuchBoolean.Y_N("")).equals("N")
+      assert_that(MuchBoolean.Y_N(Factory.string)).equals("Y")
       assert_that(MuchBoolean.yes_no(true)).equals("yes")
       assert_that(MuchBoolean.yes_no(false)).equals("no")
       assert_that(MuchBoolean.yes_no(nil)).equals("no")
@@ -147,29 +238,18 @@ class MuchBoolean
       assert_that(MuchBoolean.YES_NO(nil)).equals("NO")
       assert_that(MuchBoolean.YES_NO("")).equals("NO")
       assert_that(MuchBoolean.YES_NO(Factory.string)).equals("YES")
-      assert_that(MuchBoolean.y_n(true)).equals("y")
-      assert_that(MuchBoolean.y_n(false)).equals("n")
-      assert_that(MuchBoolean.y_n(nil)).equals("n")
-      assert_that(MuchBoolean.y_n("")).equals("n")
-      assert_that(MuchBoolean.y_n(Factory.string)).equals("y")
-      assert_that(MuchBoolean.Y_N(true)).equals("Y")
-      assert_that(MuchBoolean.Y_N(false)).equals("N")
-      assert_that(MuchBoolean.Y_N(nil)).equals("N")
-      assert_that(MuchBoolean.Y_N("")).equals("N")
-      assert_that(MuchBoolean.Y_N(Factory.string)).equals("Y")
 
+      assert_that(MuchBoolean.convert(MuchBoolean.y_n(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.y_n(false))).is_false
+      assert_that(MuchBoolean.convert(MuchBoolean.Y_N(true))).is_true
+      assert_that(MuchBoolean.convert(MuchBoolean.Y_N(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.yes_no(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.yes_no(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.Yes_No(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.Yes_No(false))).is_false
       assert_that(MuchBoolean.convert(MuchBoolean.YES_NO(true))).is_true
       assert_that(MuchBoolean.convert(MuchBoolean.YES_NO(false))).is_false
-      assert_that(MuchBoolean.convert(MuchBoolean.y_n(true))).is_true
-      assert_that(MuchBoolean.convert(MuchBoolean.y_n(false))).is_false
-      assert_that(MuchBoolean.convert(MuchBoolean.Y_N(true))).is_true
-      assert_that(MuchBoolean.convert(MuchBoolean.Y_N(false))).is_false
     end
-
   end
 
   class InitTests < UnitTests

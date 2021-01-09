@@ -107,11 +107,11 @@ class MuchBoolean
     @actual = self.class.convert(@given)
   end
 
-  def ==(other_boolean)
-    if other_boolean.kind_of?(MuchBoolean)
-      self.actual == other_boolean.actual
+  def ==(other)
+    actual == if other.is_a?(MuchBoolean)
+      other.actual
     else
-      self.actual == other_boolean
+      other
     end
   end
 

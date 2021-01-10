@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require "assert"
 require "much-boolean"
 
 class MuchBoolean
-
   class UnitTests < Assert::Context
     desc "MuchBoolean"
     subject{ MuchBoolean }
@@ -132,9 +133,10 @@ class MuchBoolean
     end
 
     should "convert all other values as `true`" do
-      [Factory.string, Factory.integer, Factory.date, Factory.time].each do |val|
-        assert_that(MuchBoolean.convert(val)).is_true
-      end
+      [Factory.string, Factory.integer, Factory.date, Factory.time]
+        .each do |val|
+          assert_that(MuchBoolean.convert(val)).is_true
+        end
     end
 
     should "encode booleans as ones and zeros" do
